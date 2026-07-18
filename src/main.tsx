@@ -1,42 +1,144 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ArrowDown, ArrowRight, BellRing, BrainCircuit, Building2, CalendarCheck, Check, ChevronRight, CircleDot, FileSpreadsheet, Filter, Layers3, Search, Sparkles, Target, Upload, Waypoints } from 'lucide-react';
+import { ArrowDown, Check, CircleDot, FileSpreadsheet, Filter, Waypoints } from 'lucide-react';
 import './styles.css';
 
-const A='./screens/';
-const screens={home:A+'home.png',applications:A+'applications.png',companies:A+'companies.png',ai:A+'ai.png',profile:A+'profile.png',detail:A+'detail.png'};
+const asset = './screens/';
+const screens = {
+  home: `${asset}home.png`,
+  applications: `${asset}applications.png`,
+  ai: `${asset}ai.png`,
+  detail: `${asset}detail.png`,
+  todayTasks: `${asset}today-tasks.png`,
+  todayManualEntry: `${asset}today-manual-entry.png`,
+  opportunityToApply: `${asset}opportunity-to-apply.jpg`,
+  stageStatusTimeline: `${asset}stage-status-timeline.jpg`,
+};
 
-function Reveal({children,className=''}:{children:React.ReactNode,className?:string}){const ref=React.useRef<HTMLDivElement>(null);React.useEffect(()=>{const el=ref.current;if(!el)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('is-visible');o.disconnect()}},{threshold:.12});o.observe(el);return()=>o.disconnect()},[]);return <div ref={ref} className={`reveal ${className}`}>{children}</div>}
-function Phone({src,alt,className=''}:{src:string,alt:string,className?:string}){return <div className={`phone ${className}`}><div className="phone-top"><i/><span/></div><img src={src} alt={alt}/></div>}
-function SectionTitle({eyebrow,title,desc}:{eyebrow:string,title:string,desc?:string}){return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2>{desc&&<p>{desc}</p>}</div>}
-const tags=(items:string[])=> <div className="tags">{items.map(x=><span key={x}>{x}</span>)}</div>;
+function Reveal({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        element.classList.add('is-visible');
+        observer.disconnect();
+      }
+    }, { threshold: 0.12 });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+  return <div ref={ref} className={`reveal ${className}`}>{children}</div>;
+}
 
-function App(){return <>
-  <nav><a href="#top" className="brand"><span>✓</span>求职行动清单</a><div className="navlinks"><a href="#story">用户问题</a><a href="#flow">产品流程</a><a href="#screens">界面展示</a><a href="#thinking">设计思考</a></div><a className="nav-cta" href="#prototype">体验原型 <ArrowRight size={15}/></a></nav>
-  <main id="top">
-    <header className="hero"><div className="orb orb-a"/><div className="orb orb-b"/><div className="hero-copy"><div className="kicker"><span/> INTERACTIVE PRODUCT CASE STUDY</div><h1>让每一次投递，<br/>都有<em>清楚的下一步</em></h1><p>集中整理岗位、投递进度、面试安排和待办提醒，不再依靠聊天记录、收藏夹和零散表格反复确认。</p>{tags(['微信小程序','Web 交互演示','个人产品设计'])}<div className="hero-actions"><a className="primary-action" href="#prototype">体验交互原型 <ArrowRight size={16}/></a><a className="secondary-action" href="#story">了解设计思路 <ArrowDown size={16}/></a></div><div className="hero-meta"><div><small>产品定位</small><b>从收集岗位，到跟进每一次投递</b></div><div><small>核心价值</small><b>岗位整理 · 进度跟进 · 今日事项</b></div></div></div><div className="hero-visual"><div className="hero-glow"/><Phone src={screens.applications} alt="投递列表界面" className="phone-left"/><Phone src={screens.home} alt="小程序首页界面" className="phone-main"/><Phone src={screens.companies} alt="企业库界面" className="phone-right"/><div className="float-card f1"><CalendarCheck/><span><b>今日事项</b><small>3 项待处理</small></span></div><div className="float-card f2"><Sparkles/><span><b>岗位已整理</b><small>可以开始筛选</small></span></div></div></header>
+function Phone({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+  return <div className={`phone ${className}`}><div className="phone-top"><i /><span /></div><img src={src} alt={alt} /></div>;
+}
 
-    <section id="story" className="story section"><Reveal><SectionTitle eyebrow="01 / USER PROBLEM" title="真正让人疲惫的，不只是找岗位" desc="岗位信息散落在招聘软件、邮箱、表格、截图和聊天记录里。投递之后，还要分别记住笔试、面试、等待结果和跟进时间。信息越来越多，下一步却越来越不清楚。"/></Reveal><Reveal className="problem-grid"><article><span>01</span><h3>岗位太分散</h3><p>收藏、截图、链接和表格放在不同地方，想整理时又要重新查找。</p></article><article><span>02</span><h3>进度容易混乱</h3><p>同一时间跟进多个岗位，很容易忘记目前进行到哪一轮。</p></article><article><span>03</span><h3>重要时间容易遗漏</h3><p>笔试截止、面试时间和等待结果后的跟进，都需要自己反复记忆。</p></article></Reveal><Reveal className="insight"><div className="insight-mark">“</div><p>把分散的岗位、投递进度和面试安排，整理成一条<strong>清楚的求职行动线</strong>。</p></Reveal></section>
+function SectionTitle({ eyebrow, title, desc }: { eyebrow: string; title: string; desc?: string }) {
+  return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2>{desc && <p>{desc}</p>}</div>;
+}
 
-    <section className="audience section soft"><Reveal><SectionTitle eyebrow="02 / PROJECT BRIEF" title="围绕个人求职进度设计" desc="这是一个围绕个人求职整理与进度管理设计的产品项目，重点探索岗位导入、机会筛选、流程跟进和待办提醒之间的衔接。"/></Reveal><div className="persona-row">{[["01","项目类型","个人产品设计","从真实求职整理问题出发"],["02","产品形态","微信小程序 / Web 演示","同时呈现产品与设计过程"],["03","当前状态","可交互原型","用于验证核心流程与状态"]].map(x=><Reveal className="persona" key={x[0]}><span>{x[0]}</span><small>{x[1]}</small><h3>{x[2]}</h3><p>{x[3]} <ChevronRight size={15}/></p></Reveal>)}</div><Reveal className="pain-strip">{[[Layers3,"需求梳理","明确问题与产品边界"],[Waypoints,"信息架构","组织机会、投递与待办"],[Upload,"交互与界面","处理流程和复杂状态"],[BellRing,"前端实现","把设计做成可操作原型"]].map(([I,a,b]:any)=><div key={a}><I/><span><b>{a}</b><small>{b}</small></span></div>)}</Reveal></section>
+function EvidenceImage({ src, auxSrc, alt, caption, mode = 'default' }: { src: string; auxSrc?: string; alt: string; caption: string; mode?: 'default' | 'opportunity' | 'timeline' }) {
+  return <figure className={`evidence-figure evidence-${mode}`}><div className="evidence-visual"><div className="evidence-crop"><img src={src} alt={alt} /></div>{auxSrc && <div className="evidence-aux"><img src={auxSrc} alt="首页手动新建待办入口" /></div>}</div><figcaption>{caption}</figcaption></figure>;
+}
 
-    <section className="position section"><Reveal><SectionTitle eyebrow="03 / POSITIONING" title="不是岗位推荐平台" desc="产品承接用户已经找到的岗位，帮助完成整理、筛选和后续跟进，不建立公共岗位库，也不把 AI 推荐作为核心。"/></Reveal><Reveal className="decision"><div className="decision-no"><span>不在范围内</span><h3>公共招聘网站</h3><h3>AI 推荐岗位</h3><h3>公开进度排名</h3></div><div className="decision-core"><Target/><span>产品定位</span><h3>求职进度管理</h3><p>从收集岗位，到跟进每一次投递。</p></div><div className="decision-yes"><span>重点处理</span><h3>整理已有岗位</h3><h3>建立待投递清单</h3><h3>跟进阶段与时间</h3></div></Reveal><Reveal className="privacy-note"><CircleDot/><p><b>信息边界：</b>岗位和投递记录以个人数据为主；企业面经和经验内容由用户决定是否分享。</p></Reveal></section>
+function App() {
+  return <>
+    <nav>
+      <a href="#top" className="brand"><span>✓</span>求职进度管理</a>
+      <div className="navlinks">
+        <a href="#background">项目背景</a>
+        <a href="#approach">产品策略</a>
+        <a href="#design">关键设计决策</a>
+        <a href="#outcome">项目实现</a>
+      </div>
+    </nav>
 
-    <section className="architecture section dark"><Reveal><SectionTitle eyebrow="04 / ARCHITECTURE" title="所有信息都回到今天" desc="首页连接岗位机会、投递记录和时间提醒，让用户打开产品时先看到今天需要处理的事情。"/></Reveal><Reveal className="arch-map"><div className="arch-home"><span>今日事项</span><b>首页</b></div>{[[Search,"岗位机会"],[Waypoints,"投递记录"],[CalendarCheck,"手动待办"],[Building2,"企业信息"],[BrainCircuit,"导入与整理"],[CircleDot,"个人设置"]].map(([I,t]:any)=><div className="arch-node" key={t}><I/><b>{t}</b></div>)}</Reveal></section>
+    <main id="top">
+      <header className="hero single-hero">
+        <div className="orb orb-a" /><div className="orb orb-b" />
+        <div className="hero-copy">
+          <div className="kicker"><span />PRODUCT CASE STUDY</div>
+          <h1>面向求职全流程的<br /><em>信息与进度管理工具</em></h1>
+          <p>整合多来源岗位信息，衔接机会筛选、投递管理、面试跟进与任务提醒，降低求职过程中的信息维护成本。</p>
+          <div className="tags"><span>个人产品项目 · AI产品设计 · 微信小程序</span></div>
+          <div className="hero-actions"><a className="primary-action" href="#background">查看项目 <ArrowDown size={16} /></a></div>
+        </div>
+        <div className="hero-visual single-phone">
+          <div className="hero-glow" />
+          <Phone src={screens.detail} alt="求职进度管理小程序投递详情" className="phone-main" />
+          <div className="float-card f1"><Waypoints /><span><b>投递进度</b><small>阶段与状态分开记录</small></span></div>
+          <div className="float-card f2"><Check /><span><b>今日待办</b><small>集中查看当前事项</small></span></div>
+        </div>
+      </header>
 
-    <section id="flow" className="flow section"><Reveal><SectionTitle eyebrow="05 / CORE FLOW" title="把求职过程整理成一条行动线" desc="收集岗位 → 筛选机会 → 加入待投递 → 跟进流程 → 处理今日事项。每一步都有明确的去向。"/></Reveal><Reveal className="flow-track five-steps">{[[FileSpreadsheet,"01","收集岗位","从 Excel、截图、链接或文字中整理岗位信息"],[Filter,"02","筛选机会","按岗位、行业和城市保留准备申请的机会"],[Target,"03","加入待投递","只把确定申请的岗位加入个人清单"],[Waypoints,"04","跟进流程","记录投递、笔试、多轮面试和 Offer"],[BellRing,"05","处理今日事项","集中查看面试、截止事项、待办和跟进提醒"]].map(([I,n,t,d]:any)=><div className="flow-step" key={n}><span>{n}</span><I/><h3>{t}</h3><p>{d}</p></div>)}</Reveal></section>
+      <section id="background" className="section background-section">
+        <Reveal><SectionTitle eyebrow="01 / 项目背景" title="项目背景" /></Reveal>
+        <Reveal className="reading-copy">
+          <p>秋招岗位信息通常分布于招聘平台、企业官网、共享表格、截图及社交渠道。用户在收集岗位后，仍需手动完成信息整理、机会筛选和投递状态维护。</p>
+          <p>随着投递数量增加，岗位信息与流程信息逐渐分离，用户需要在多个工具之间确认投递阶段、面试安排和待跟进事项，信息维护成本随之增加。</p>
+          <p>本项目尝试建立覆盖岗位收集、机会筛选、投递跟进和任务管理的连续流程，减少重复录入，并提升求职进度的可追踪性。</p>
+        </Reveal>
+      </section>
 
-    <section className="feature section soft"><Reveal><SectionTitle eyebrow="06 / KEY FEATURES" title="围绕真实使用目的设计" desc="功能不追求多，而是分别解决录入、筛选、跟进、提醒和复用的问题。"/></Reveal><div className="feature-grid"><Reveal className="feature-large"><div><span>今日事项</span><h3>今天需要处理什么，一眼就能看到</h3><p>自动归集今天的面试、笔试、截止事项和跟进提醒，也可以添加自己的待办。</p>{tags(['待参加','等待结果','手动待办'])}</div><Phone src={screens.home} alt="今日事项界面"/></Reveal><Reveal className="feature-card"><Upload/><h3>已有岗位，不必重新录入</h3><p>支持通过 Excel、截图、链接和文字整理岗位，减少重复复制和填写。</p></Reveal><Reveal className="feature-card"><Filter/><h3>先筛选，再决定投不投</h3><p>岗位先进入个人机会库，按岗位、行业和城市筛选后，再加入待投递。</p></Reveal><Reveal className="feature-card"><Waypoints/><h3>清楚知道每个岗位走到哪一步</h3><p>记录投递、笔试和多轮面试，同时保留事件时间和等待结果状态。</p></Reveal><Reveal className="feature-card"><BellRing/><h3>时间过去了，流程不会停在那里</h3><p>节点过期后提示确认已完成、延期或结束，并根据结果继续跟进。</p></Reveal><Reveal className="feature-card"><Building2/><h3>把每次准备，变成可以继续使用的经验</h3><p>集中查看企业信息、岗位记录和面试准备内容，减少下一次重复查找。</p></Reveal></div></section>
+      <section className="section soft" id="problems">
+        <Reveal><SectionTitle eyebrow="02 / 问题识别" title="问题识别" desc="经过对求职流程的拆解，问题主要集中于信息收集、流程衔接和进度维护三个环节。" /></Reveal>
+        <Reveal className="problem-grid compact-grid">
+          <article><span>01</span><h3>多来源信息缺乏统一结构</h3><p>岗位信息分布在 Excel、截图、文字和招聘平台中，字段格式与信息完整度不一致，增加了整理和维护成本。</p></article>
+          <article><span>02</span><h3>岗位整理与投递流程相互割裂</h3><p>Excel 可以完成基础筛选，但筛选结果难以直接衔接待投递、笔试、面试及结果跟进等后续流程。</p></article>
+          <article><span>03</span><h3>投递进度缺少统一状态表达</h3><p>同时跟进多个岗位时，仅记录面试阶段不足以反映当前进展，还需要区分待安排、待参加和等待结果等状态。</p></article>
+        </Reveal>
+        <Reveal className="insight compact-insight"><div className="insight-mark">“</div><p><b>设计认知</b><br />项目初期将重点放在岗位整理效率上。进一步分析后发现，现有表格已经能够满足基础筛选需求，更关键的流程断点在于：岗位完成整理后，无法持续衔接投递和面试跟进。因此，产品范围由单一的信息整理扩展为求职流程管理。</p></Reveal>
+      </section>
 
-    <section id="screens" className="showcase section"><Reveal><SectionTitle eyebrow="07 / INTERFACE" title="每一屏都回答一个问题" desc="界面保留蓝紫到青绿色的品牌风格，用明确层级区分岗位、阶段、时间和下一步操作。"/></Reveal>{[["01","今日首页","面试、笔试、截止事项和手动待办集中显示，打开首页就知道先做什么。",screens.home,"今日事项","待参加"],["02","投递记录","按阶段查看投递，区分待参加、已完成和等待结果。",screens.applications,"查看投递","等待结果"],["03","企业信息","把企业资料、岗位记录和面试准备放在一起，方便反复查看。",screens.companies,"查看企业","面试准备"],["04","导入与整理","通过截图、文字和链接整理已有岗位，不负责推荐岗位。",screens.ai,"导入岗位","整理信息"]].map((x,i)=><Reveal className={`screen-row ${i%2?'reverse':''}`} key={x[0]}><div className="screen-copy"><span>{x[0]} / FEATURE SCREEN</span><h3>{x[1]}</h3><p>{x[2]}</p>{tags([x[4],x[5]])}</div><div className="screen-stage"><div className="stage-note"><Check/>来自实际产品设计</div><Phone src={x[3]} alt={`${x[1]}界面`}/></div></Reveal>)}<Reveal className="screen-duo"><div><span>05 / 个人中心</span><h3>查看个人数据和设置</h3><p>集中查看个人信息、数据导入和常用设置。</p></div><Phone src={screens.profile} alt="个人中心界面"/><Phone src={screens.detail} alt="投递详情界面" className="duo-front"/><div className="detail-callout"><b>06 / 投递详情</b><p>在一个页面查看岗位信息、当前阶段、时间安排和跟进记录。</p></div></Reveal></section>
+      <section id="approach" className="section">
+        <Reveal><SectionTitle eyebrow="03 / 产品策略" title="产品策略" desc="产品以岗位信息为基础，将机会筛选、投递管理、阶段跟进和任务提醒纳入同一流程，使岗位数据能够随用户决策持续流转。" /></Reveal>
+        <Reveal className="flow-track five-steps compact-flow">
+          {[[FileSpreadsheet, '岗位导入'], [Filter, '机会筛选'], [Check, '待投递确认'], [Waypoints, '阶段跟进'], [CircleDot, '任务归集']].map(([Icon, title], index) => {
+            const FlowIcon = Icon as React.ComponentType<{ size?: number }>;
+            return <div className="flow-step" key={String(title)}><span>0{index + 1}</span><FlowIcon /><h3>{String(title)}</h3></div>;
+          })}
+        </Reveal>
+        <Reveal className="flow-summary">通过建立连续的数据流转关系，使岗位信息从静态记录转化为可持续维护的求职进度。</Reveal>
+      </section>
 
-    <section id="system" className="system section dark"><Reveal><SectionTitle eyebrow="08 / DESIGN SYSTEM" title="让状态容易被理解"/></Reveal><Reveal className="system-grid"><div className="palette"><h3>Color foundation</h3><div className="swatches"><span className="gradient"><b>Brand gradient</b><small>#696CFF → #24C8A5</small></span><span className="blue"><b>Primary</b><small>#6267F5</small></span><span className="green"><b>Success</b><small>#20B98D</small></span><span className="amber"><b>Warning</b><small>#F1A33C</small></span><span className="neutral"><b>Neutral</b><small>#182033</small></span></div></div><div className="type"><h3>Typography</h3><b className="t1">下一步更清楚</b><b className="t2">投递记录与今日事项</b><p>标题说明当前任务，辅助文字补充时间和状态。</p><small>辅助信息 · 12PX / MEDIUM</small></div><div className="components"><h3>Core components</h3><div className="search"><Search size={16}/>搜索公司或岗位<Filter size={16}/></div><div className="chips"><span className="active">全部</span><span>待安排时间</span><span>等待结果</span></div><button>添加岗位 <ArrowRight size={16}/></button><div className="mini-card"><i/><span><b>产品设计师</b><small>明天截止 · 待参加</small></span><em>查看投递</em></div></div></Reveal></section>
+      <section id="design" className="section soft core-designs">
+        <Reveal><SectionTitle eyebrow="04 / 关键设计决策" title="关键设计决策" desc="围绕信息归类、状态表达和任务归集形成三项设计决策，以支持连续的投递进度管理。" /></Reveal>
 
-    <section id="thinking" className="iteration section"><Reveal><SectionTitle eyebrow="09 / DESIGN THINKING" title="重点是让下一步更明确" desc="设计重点不是增加更多功能，而是让不同来源、不同阶段的信息进入同一条行动线。"/></Reveal><Reveal className="timeline">{[["01","区分岗位机会和投递记录","导入岗位不代表准备投递，先筛选再进入投递流程"],["02","区分待参加和等待结果","未参加的时间事项与已完成待反馈的事项，采用不同提醒"],["03","合并自动待办与手动待办","系统识别的节点和自己安排的任务，都放进今日事项"]].map(x=><div key={x[0]}><span>{x[0]}</span><p><small>{x[1]}</small><b>{x[2]}</b></p></div>)}</Reveal></section>
+        <Reveal className="design-row">
+          <div className="design-copy"><span>01 / 机会与投递</span><h3>区分岗位机会与投递记录</h3><dl><dt>问题</dt><dd>批量导入的岗位仅代表潜在机会，并不等同于用户已经产生投递意向。若直接生成投递记录，将导致有效记录与待筛选信息混合。</dd><dt>设计策略</dt><dd>导入数据首先进入岗位机会列表，用户完成条件筛选与确认后，再将目标岗位加入待投递。</dd><dt>方案价值</dt><dd>在保留批量导入效率的同时，确保投递列表仅承载需要持续跟进的岗位。</dd></dl></div>
+          <div className="screen-stage evidence-stage"><EvidenceImage src={screens.opportunityToApply} alt="待投递岗位筛选与投递确认界面" caption="导入结果先进入岗位机会列表，经过筛选与确认后再加入待投递。" mode="opportunity" /></div>
+        </Reveal>
 
-    <section id="prototype" className="prototype section dark"><Reveal><div className="prototype-card"><span>10 / INTERACTIVE PROTOTYPE</span><h2>亲自走一遍完整的求职管理流程</h2><p>你可以在原型中查看岗位整理、投递阶段、面试安排和首页待办之间如何衔接。</p><a className="primary-action" href="https://www.figma.com/design/s72nNLJSYwBzaOkiAyopEb" target="_blank" rel="noreferrer">开始体验 <ArrowRight size={16}/></a><small>当前为交互演示版本，页面中的数据仅用于展示。</small></div></Reveal></section>
+        <Reveal className="design-row reverse">
+          <div className="design-copy"><span>02 / 阶段与状态</span><h3>拆分投递阶段与阶段状态</h3><dl><dt>问题</dt><dd>笔试、一面和二面等字段只能描述流程位置，无法完整表示事件是否已安排、是否已参加或是否正在等待结果。</dd><dt>设计策略</dt><dd>使用阶段字段记录求职流程位置，使用状态字段记录当前处理状态。例如：一面 · 待参加、一面 · 等待结果、二面 · 待安排时间。</dd><dt>方案价值</dt><dd>阶段与状态组合后，可以更准确地表达投递进展，并为提醒和待办生成提供判断依据。</dd></dl><div className="state-examples"><span>一面 · 待安排时间</span><span>一面 · 待参加</span><span>一面 · 等待结果</span><span>二面 · 待参加</span></div></div>
+          <div className="screen-stage evidence-stage"><EvidenceImage src={screens.stageStatusTimeline} alt="投递详情中的阶段、状态与事件时间" caption="阶段记录流程位置，状态描述当前进展，两者组合形成完整的投递状态。" mode="timeline" /></div>
+        </Reveal>
 
-    <section id="summary" className="summary section"><Reveal><div className="summary-card"><span>11 / PROJECT NOTE</span><h2>把分散信息，整理成<strong>一条行动线</strong>。</h2><p>这是一个个人产品设计项目，设计范围包括需求梳理、信息架构、交互设计、界面设计和前端实现。当前版本用于展示核心流程与设计判断。</p><div className="summary-skills">{['个人产品设计','微信小程序','Web 交互演示','完整设计范围','可交互原型'].map((x,i)=><div key={x}><small>0{i+1}</small><b>{x}</b></div>)}</div><a href="#top">返回顶部 <ArrowRight size={16}/></a></div></Reveal></section>
-  </main><footer><span>求职行动清单 · Interactive Product Case Study</span><span>个人产品设计 / 可交互原型</span></footer>
-</>}
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
+        <Reveal className="design-row">
+          <div className="design-copy"><span>03 / 任务归集</span><h3>统一归集任务与流程事件</h3><dl><dt>问题</dt><dd>求职任务同时来自面试安排、笔试截止、岗位截止、结果跟进和用户手动计划，分散展示会增加检查成本。</dd><dt>设计策略</dt><dd>首页依据事件时间、截止时间和提醒时间，统一归集系统生成事项与用户手动待办。</dd><dt>方案价值</dt><dd>用户可以在单一入口查看当日需要处理的求职事项，减少在不同投递记录之间反复检查。</dd></dl></div>
+          <div className="screen-stage evidence-stage"><EvidenceImage src={screens.todayTasks} auxSrc={screens.todayManualEntry} alt="首页今日待办中的面试、截止与跟进事项" caption="系统事件与手动任务按照时间统一归集，在首页形成当日待办。" /></div>
+        </Reveal>
+      </section>
+
+      <section className="section ai-section">
+        <Reveal className="ai-brief">
+          <div><span>05 / AI 能力</span><h2>AI能力定位</h2><p>AI 主要承担非结构化信息的识别与整理，将截图和文字中的企业、岗位、城市及截止时间转换为可编辑字段。岗位筛选、投递确认和阶段调整仍由用户完成。</p><strong>AI 承担信息处理，用户保留最终决策权。</strong></div>
+          <div className="capability-list">{[['Excel 岗位导入', '已实现'], ['图片 OCR 识别', '已实现'], ['文字信息整理', '已实现'], ['面经结构化整理', '已实现'], ['链接自动解析', '仍在完善']].map(([name, state]) => <p key={name}><span>{name}</span><b className={state === '仍在完善' ? 'pending' : ''}>{state}</b></p>)}</div>
+        </Reveal>
+      </section>
+
+      <section id="outcome" className="section dark outcome-section">
+        <Reveal><SectionTitle eyebrow="06 / 项目实现" title="项目实现" desc="项目覆盖需求分析、信息架构、状态模型、交互设计、界面优化及前端实现，并形成可运行的微信小程序版本。" /></Reveal>
+        <Reveal className="outcome-grid outcome-copy-only">
+          <div className="project-facts"><p><span>项目类型</span><b>个人产品项目</b></p><p><span>产品形态</span><b>微信小程序</b></p><p><span>负责范围</span><b>需求分析、产品设计、交互设计、界面优化与开发协作</b></p><p><span>技术实现</span><b>uni-app、Vue 3、TypeScript、Pinia、微信云开发</b></p><p><span>当前状态</span><b>核心流程已实现，链接解析功能仍在完善</b></p></div>
+        </Reveal>
+        <Reveal className="closing"><p>本项目的设计重点并非替代 Excel，而是补充岗位整理与投递跟进之间缺失的流程衔接。</p></Reveal>
+      </section>
+    </main>
+  </>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
